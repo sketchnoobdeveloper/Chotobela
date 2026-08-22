@@ -1,6 +1,6 @@
 package com.chotobela.core.engine
 
-import kotlinx.coroutines.atomic.AtomicLong
+import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
