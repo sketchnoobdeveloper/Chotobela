@@ -13,8 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.coroutineContext
-import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.yield
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -94,7 +93,7 @@ class DemoDownloadManager @Inject constructor(
                 dest.outputStream().use { output ->
                     val buffer = ByteArray(8192)
                     while (true) {
-                        coroutineContext.ensureActive()
+                        yield()
                         val read = input.read(buffer)
                         if (read == -1) break
                         output.write(buffer, 0, read)
