@@ -11,3 +11,7 @@
 *.aab
 *.keystore
 !debug.keystore
+
+# Vendored MAME source tree (see third_party/VENDORED_MAME.md)
+third_party/mame/*
+!third_party/mame/README.md
