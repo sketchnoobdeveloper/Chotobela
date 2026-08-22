@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.coroutineContext
+import kotlinx.coroutines.ensureActive
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -92,7 +94,7 @@ class DemoDownloadManager @Inject constructor(
                 dest.outputStream().use { output ->
                     val buffer = ByteArray(8192)
                     while (true) {
-                        kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                        coroutineContext.ensureActive()
                         val read = input.read(buffer)
                         if (read == -1) break
                         output.write(buffer, 0, read)
@@ -119,7 +121,7 @@ class DemoDownloadManager @Inject constructor(
 
     /** Streams [input] to disk; returns total bytes written. */
     @Suppress("UNUSED_PARAMETER")
-    private fun installIntoLibrary(game: GameDto, downloaded: File) {
+    private suspend fun installIntoLibrary(game: GameDto, downloaded: File) {
         val romDir = File(context.filesDir, "roms/${game.core}").apply { mkdirs() }
         val ext = game.downloadUrl.substringAfterLast('.', "rom")
         val target = File(romDir, "${game.id}.$ext")
