@@ -6,8 +6,7 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
-import io.github.jan.supabase.postgrest.query.eq
-import io.github.jan.supabase.postgrest.query.ilike
+import io.github.jan.supabase.postgrest.query.filter
 
 /** Catalog operations backed by Supabase in live mode, demo catalog otherwise. */
 class StoreRepository(
@@ -17,14 +16,18 @@ class StoreRepository(
     override suspend fun featuredGames(): List<GameDto> =
         remoteOrDemo { client ->
             client.postgrest.from("games")
-                .select { eq("featured", true) }
+                .select {
+                    filter { eq("featured", true) }
+                }
                 .decodeList()
         }
 
     override suspend fun trendingGames(): List<GameDto> =
         remoteOrDemo { client ->
             client.postgrest.from("games")
-                .select { eq("trending", true) }
+                .select {
+                    filter { eq("trending", true) }
+                }
                 .decodeList()
         }
 
@@ -41,7 +44,9 @@ class StoreRepository(
     override suspend fun byCategory(category: String): List<GameDto> =
         remoteOrDemo { client ->
             client.postgrest.from("games")
-                .select { eq("category", category) }
+                .select {
+                    filter { eq("category", category) }
+                }
                 .decodeList()
         }
 
@@ -49,7 +54,7 @@ class StoreRepository(
         runCatchingRemote {
             val client = provider.clientOrNull() ?: return DemoCatalog.games.map { it.category }
             client.postgrest.from("games")
-                .select { }
+                .select {}
                 .decodeList<GameDto>()
         }.getOrDefault(DemoCatalog.games)
             .map { it.category }
@@ -60,7 +65,9 @@ class StoreRepository(
         if (q.isEmpty()) return recentlyAdded()
         return remoteOrDemo { client ->
             client.postgrest.from("games")
-                .select { ilike("title", "%$q%") }
+                .select {
+                    filter { ilike("title", "%$q%") }
+                }
                 .decodeList()
         }.filter { it.title.contains(q, ignoreCase = true) }
     }
@@ -69,7 +76,9 @@ class StoreRepository(
         runCatchingRemote {
             val client = provider.clientOrNull() ?: error("demo mode")
             client.postgrest.from("games")
-                .select { eq("id", id) }
+                .select {
+                    filter { eq("id", id) }
+                }
                 .decodeSingleOrNull<GameDto>()
         }.getOrNull() ?: DemoCatalog.games.firstOrNull { it.id == id }
 
@@ -77,7 +86,9 @@ class StoreRepository(
         runCatchingRemote {
             val client = provider.clientOrNull() ?: return emptyList()
             client.postgrest.from("reviews")
-                .select { eq("game_id", gameId) }
+                .select {
+                    filter { eq("game_id", gameId) }
+                }
                 .decodeList<ReviewDto>()
         }.getOrDefault(emptyList())
 
