@@ -15,7 +15,7 @@ sealed interface EmulatorPhase {
 /**
  * Observable state of the single active emulator session.
  */
-class EmulatorStateHolder {
+class EmulatorStateHolder @javax.inject.Inject constructor() {
     private val _phase = MutableStateFlow<EmulatorPhase>(EmulatorPhase.Idle)
     val phase: StateFlow<EmulatorPhase> = _phase.asStateFlow()
 
