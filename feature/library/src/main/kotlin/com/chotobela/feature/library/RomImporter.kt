@@ -33,20 +33,20 @@ class RomImporter @Inject constructor(
     suspend fun import(uri: Uri): ImportResult = withContext(dispatchers.io) {
         val resolver = context.contentResolver
 
-        val displayName = queryDisplayName(uri) ?: return@withContext Rejected("Unreadable file")
+        val displayName = queryDisplayName(uri) ?: return@withContext ImportResult.Rejected("Unreadable file")
         val safeName = displayName.replace(Regex("[^A-Za-z0-9._ -]"), "_")
         val ext = safeName.substringAfterLast('.', "").lowercase()
 
         val platformInfo = when (ext) {
             "ch8", "chip8" -> Triple("CHIP-8", "chip8", "roms/chip8")
-            else -> return@withContext Rejected(
+            else -> return@withContext ImportResult.Rejected(
                 "Unsupported format .$ext — CHIP-8 (.ch8) supported at launch"
             )
         }
 
         val bytes = runCatching { resolver.openInputStream(uri)?.use { it.readBytes() } }
             .getOrNull()
-            ?: return@withContext Rejected("Could not read file")
+            ?: return@withContext ImportResult.Rejected("Could not read file")
 
         val romsDir = File(context.filesDir, platformInfo.third).apply { mkdirs() }
         val target = File(romsDir, "${uniqueId(safeName)}_$safeName")

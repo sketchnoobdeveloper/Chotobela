@@ -32,7 +32,7 @@ class PlayerViewModel @Inject constructor(
 
     companion object {
         const val AUTO_SLOT = 0
-        val SLOT_IDS = 0..5
+        val SLOT_IDS = (0..5).toList()
     }
 
     val gameId: String = checkNotNull(savedStateHandle["gameId"])
