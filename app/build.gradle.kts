@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":native-engine"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.timber)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.activity.compose)
 
