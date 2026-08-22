@@ -49,7 +49,9 @@ Threading model (mirrors professional emulators):
 
 ## Build
 
-Requirements: JDK 17, Android SDK 35, NDK 27.2+, CMake 3.22.1.
+Requirements: JDK 17, Android SDK 36, NDK 27.2+, CMake 3.22.1, Gradle 8.11.1 (wrapper), AGP 8.9.1.
+
+Backend client: supabase-kt 3.1.2 (auth/postgrest/storage) over Ktor 3.1.1.
 
 ```bash
 ./gradlew :app:assembleDebug
