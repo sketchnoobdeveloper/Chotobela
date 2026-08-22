@@ -6,6 +6,8 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
+import io.github.jan.supabase.postgrest.query.eq
+import io.github.jan.supabase.postgrest.query.ilike
 
 /** Catalog operations backed by Supabase in live mode, demo catalog otherwise. */
 class StoreRepository(
