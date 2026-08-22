@@ -76,7 +76,7 @@ fun PauseMenu(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(SLOT_IDS, key = { it }) { id ->
+            items(PlayerViewModel.SLOT_IDS, key = { it }) { id ->
                 SlotCard(
                     info = slots.firstOrNull { it.slot == id },
                     onSave = {
@@ -102,7 +102,7 @@ fun PauseMenu(
                 Text("Save & Exit", color = MaterialTheme.colorScheme.error)
             }
             androidx.compose.material3.Button(onClick = {
-                viewModel.saveSlot(AUTO_SLOT)
+                viewModel.saveSlot(PlayerViewModel.AUTO_SLOT)
                 onResume()
             }, modifier = Modifier.weight(1f)) {
                 Text("Quick Save & Continue")

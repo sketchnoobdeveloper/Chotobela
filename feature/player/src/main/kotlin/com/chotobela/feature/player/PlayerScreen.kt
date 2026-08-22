@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -190,7 +191,7 @@ private fun handleGamepadKey(
 ): Boolean {
     val action = event.nativeKeyEvent.action
     val keyCode = event.nativeKeyEvent.keyCode
-    val key: Int? = when (keyCode) {
+    val key: Int = when (keyCode) {
         KeyEvent.KEYCODE_DPAD_UP -> Chip8KeyMap.DPAD_UP
         KeyEvent.KEYCODE_DPAD_DOWN -> Chip8KeyMap.DPAD_DOWN
         KeyEvent.KEYCODE_DPAD_LEFT -> Chip8KeyMap.DPAD_LEFT
