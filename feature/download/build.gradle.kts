@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
 
+    implementation(libs.coroutines.core)
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
@@ -35,6 +36,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
+    implementation(libs.timber)
 
     testImplementation(libs.junit)
 }
