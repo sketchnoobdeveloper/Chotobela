@@ -1,4 +1,4 @@
-package com.chotobela.core.network.di
+package com.chotobela.app.di
 
 import com.chotobela.core.network.StoreApi
 import com.chotobela.core.network.StoreRepository
@@ -9,9 +9,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Composition-root binding for the network layer.
+ * Lives in :app so the network module stays annotation-free.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object AppNetworkModule {
 
     @Provides
     @Singleton

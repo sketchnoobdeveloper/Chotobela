@@ -6,15 +6,12 @@ import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.storage.Storage
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Lazily creates the Supabase client only when live mode is active.
  * In demo mode [clientOrNull] returns null and callers use local fallbacks.
  */
-@Singleton
-class SupabaseClientProvider @Inject constructor() {
+class SupabaseClientProvider {
 
     @Volatile
     private var cached: SupabaseClient? = null
