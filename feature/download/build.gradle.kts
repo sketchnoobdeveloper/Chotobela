@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.chotobela.feature.download"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig { minSdk = 26 }
     compileOptions {

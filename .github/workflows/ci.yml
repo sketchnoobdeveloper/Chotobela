@@ -30,7 +30,7 @@ jobs:
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
-            "ndk;27.2.12479018" "cmake;3.22.1" "platforms;android-35" "platform-tools" \
+            "ndk;27.2.12479018" "cmake;3.22.1" "platforms;android-36" "platform-tools" \
             > /dev/null
 
       - name: Build debug APK

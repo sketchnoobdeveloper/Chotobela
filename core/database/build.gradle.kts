@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.chotobela.core.database"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
