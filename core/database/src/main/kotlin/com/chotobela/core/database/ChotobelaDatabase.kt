@@ -10,7 +10,7 @@ import com.chotobela.core.database.entity.SaveStateEntity
 @Database(
     entities = [GameEntity::class, SaveStateEntity::class],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class ChotobelaDatabase : RoomDatabase() {
     abstract fun libraryDao(): LibraryDao
