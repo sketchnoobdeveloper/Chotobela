@@ -23,6 +23,7 @@ android {
 dependencies {
     api(libs.coroutines.core)
     implementation(libs.coroutines.android)
+    api(libs.javax.inject)
     implementation(libs.timber)
 
     testImplementation(libs.junit)

@@ -2,7 +2,7 @@
  * Chotobela Engine - JNI bridge
  * Implements symbols for com.chotobela.engine.NativeEngine.
  */
-#include "../../engine-host/engine_host.h"
+#include "../engine-host/engine_host.h"
 #include "../renderer/renderer_backend.h"
 #include "../audio/audio_backend.h"
 #include "../input/input_state.h"
