@@ -59,7 +59,7 @@ class EmulatorSession @Inject constructor(
     /** Prepares native host once per process; safe to call repeatedly. */
     fun ensureHostReady(): Boolean {
         val dir = File(context.filesDir, MAX_SAVES_DIR).apply { mkdirs() }
-        return (engine as? com.chotobela.core.engine.JniEmulatorEngine)?.init(dir.absolutePath) ?: true
+        return engine.initHost(dir.absolutePath)
     }
 
     suspend fun load(gameId: String, romPath: String): Boolean {
@@ -193,26 +193,11 @@ class EmulatorSession @Inject constructor(
     }
 
     fun applyAudioNow(audio: AudioSettings) {
-        if (audio.enabled) {
-            (engine as? com.chotobela.core.engine.JniEmulatorEngine)?.let { jni ->
-                com.chotobela.engine.NativeEngine.ensureLoaded()
-                jniTargetSampleRate(audio)
-                NativeBridge.setVolume(if (audio.volume > 0f) audio.volume else 1.0f)
-                NativeBridge.audioStart()
-            }
-        } else {
-            NativeBridge.audioStop()
+        if (!audio.enabled) {
+            engine.stopAudioTransport()
+            return
         }
+        engine.setMasterVolume(if (audio.volume > 0f) audio.volume else 1f)
+        engine.startAudioTransport()
     }
-
-    private fun jniTargetSampleRate(@Suppress("UNUSED_PARAMETER") audio: AudioSettings) = Unit
-}
-
-/** Thin indirection so EmulatorSession stays testable without native calls. */
-private object NativeBridge {
-    fun audioStart(): Int = tryNative { com.chotobela.engine.NativeEngine.nativeAudioStart() } ?: -1
-    fun audioStop() = tryNative { com.chotobela.engine.NativeEngine.nativeAudioStop() } ?: Unit
-    fun setVolume(v: Float) = tryNative { com.chotobela.engine.NativeEngine.nativeSetVolume(v) } ?: Unit
-
-    private inline fun <T> tryNative(block: () -> T): T? = runCatching(block).getOrNull()
 }

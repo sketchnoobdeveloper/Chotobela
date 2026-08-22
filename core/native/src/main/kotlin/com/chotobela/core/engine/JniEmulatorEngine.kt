@@ -24,6 +24,19 @@ class JniEmulatorEngine @Inject constructor() : EmulatorEngineApi {
         return initialized
     }
 
+    override fun initHost(savesDir: String): Boolean = init(savesDir)
+
+    override fun startAudioTransport(): Int =
+        if (initialized) runCatching { NativeEngine.nativeAudioStart() }.getOrDefault(-1) else -1
+
+    override fun stopAudioTransport() {
+        if (initialized) runCatching { NativeEngine.nativeAudioStop() }
+    }
+
+    override fun setMasterVolume(volume: Float) {
+        if (initialized) runCatching { NativeEngine.nativeSetVolume(volume.coerceIn(0f, 1f)) }
+    }
+
     override fun load(romPath: String): Boolean {
         if (!initialized) return false
         val id = when (romPath.substringAfterLast('.').lowercase()) {

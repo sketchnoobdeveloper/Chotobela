@@ -2,98 +2,110 @@ package com.chotobela.core.network
 
 import com.chotobela.core.network.dto.GameDto
 import com.chotobela.core.network.dto.ReviewDto
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Order
+import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.query.filter
 
 /** Catalog operations backed by Supabase in live mode, demo catalog otherwise. */
-interface StoreApi {
-    suspend fun featuredGames(): List<GameDto>
-    suspend fun trendingGames(): List<GameDto>
-    suspend fun recentlyAdded(limit: Int = 20): List<GameDto>
-    suspend fun byCategory(category: String): List<GameDto>
-    suspend fun categories(): List<String>
-    suspend fun search(query: String): List<GameDto>
-    suspend fun gameById(id: String): GameDto?
-    suspend fun reviewsFor(gameId: String): List<ReviewDto>
-}
-
 class StoreRepository(
     private val provider: SupabaseClientProvider
 ) : StoreApi {
 
-    override suspend fun featuredGames(): List<GameDto> = fetchOrDemo { client ->
-        client.postgrest.from("games")
-            .select {
-                filter { eq("featured", true) }
-            }
-            .decodeList<GameDto>()
-    }.filter { it.featured }
+    override suspend fun featuredGames(): List<GameDto> =
+        remoteOrDemo { client ->
+            client.postgrest.from("games")
+                .select {
+                    filter { eq("featured", true) }
+                }
+                .decodeList()
+        }
 
-    override suspend fun trendingGames(): List<GameDto> = fetchOrDemo { client ->
-        client.postgrest.from("games")
-            .select {
-                filter { eq("trending", true) }
-            }
-            .decodeList<GameDto>()
-    }.filter { it.trending }
+    override suspend fun trendingGames(): List<GameDto> =
+        remoteOrDemo { client ->
+            client.postgrest.from("games")
+                .select {
+                    filter { eq("trending", true) }
+                }
+                .decodeList()
+        }
 
-    override suspend fun recentlyAdded(limit: Int): List<GameDto> = fetchOrDemo(limit) { client ->
-        client.postgrest.from("games")
-            .select {
-                order("created_at", io.github.jan.supabase.postgrest.query.Order.DESCENDING)
-                limit(count = limit.toLong())
-            }
-            .decodeList<GameDto>()
-    }
+    override suspend fun recentlyAdded(limit: Int): List<GameDto> =
+        remoteOrDemo(limit) { client ->
+            client.postgrest.from("games")
+                .select {
+                    order("created_at", Order.DESCENDING)
+                    limit(count = limit.toLong())
+                }
+                .decodeList()
+        }
 
-    override suspend fun byCategory(category: String): List<GameDto> = fetchOrDemo(category) { client ->
-        client.postgrest.from("games")
-            .select {
-                filter { eq("category", category) }
-            }
-            .decodeList<GameDto>()
-    }
+    override suspend fun byCategory(category: String): List<GameDto> =
+        remoteOrDemo { client ->
+            client.postgrest.from("games")
+                .select {
+                    filter { eq("category", category) }
+                }
+                .decodeList()
+        }
 
     override suspend fun categories(): List<String> =
-        fetchOrDemo(Unit) { _ -> DemoCatalog.games.map { it.category } }
+        runCatchingRemote {
+            val client = provider.clientOrNull() ?: error("demo mode")
+            client.postgrest.from("games")
+                .select { }
+                .decodeList<GameDto>()
+        }.getOrElse { DemoCatalog.games }
             .map { it.category }
             .distinct()
 
     override suspend fun search(query: String): List<GameDto> {
         val q = query.trim()
         if (q.isEmpty()) return recentlyAdded()
-        return fetchOrDemo(q) { client ->
+        return remoteOrDemo { client ->
             client.postgrest.from("games")
                 .select {
                     filter { ilike("title", "%$q%") }
                 }
-                .decodeList<GameDto>()
+                .decodeList()
         }.filter { it.title.contains(q, ignoreCase = true) }
     }
 
     override suspend fun gameById(id: String): GameDto? =
-        fetchOrDemo(id) { client ->
+        runCatchingRemote {
+            val client = provider.clientOrNull() ?: return DemoCatalog.games.firstOrNull { it.id == id }
             client.postgrest.from("games")
                 .select {
                     filter { eq("id", id) }
                 }
                 .decodeSingleOrNull<GameDto>()
-        }
+        }.getOrNull() ?: DemoCatalog.games.firstOrNull { it.id == id }
 
     override suspend fun reviewsFor(gameId: String): List<ReviewDto> =
         runCatchingRemote {
             val client = provider.clientOrNull() ?: return emptyList()
             client.postgrest.from("reviews")
-                .select { filter { eq("game_id", gameId) } }
+                .select {
+                    filter { eq("game_id", gameId) }
+                }
                 .decodeList<ReviewDto>()
         }.getOrDefault(emptyList())
 
-    private inline fun <T, R> fetchOrDemo(fallbackArg: T, block: (io.github.jan.supabase.SupabaseClient) -> List<GameDto>): List<GameDto> =
-        runCatchingRemote {
-            val client = provider.clientOrNull() ?: throw IllegalStateException("demo")
+    /** Live query with graceful fallback to the demo catalog. */
+    private suspend fun remoteOrDemo(
+        fallbackArg: Any? = null,
+        block: suspend (SupabaseClient) -> List<GameDto>
+    ): List<GameDto> {
+        @Suppress("UNUSED_VARIABLE") val arg = fallbackArg // kept for logging context in future
+        return runCatchingRemote {
+            val client = provider.clientOrNull() ?: error("demo mode")
             block(client)
-        }.getOrElse { demoGames(fallbackArg) }
+        }.fold(
+            onSuccess = { it },
+            onFailure = { DemoCatalog.games }
+        )
+    }
 
-    private fun demoGames(@Suppress("UNUSED_PARAMETER") arg: Any?): List<GameDto> = DemoCatalog.games
-
-    private inline fun <T> runCatchingRemote(block: () -> T): Result<T> =
-        runCatching(block)
+    private inline fun <T> runCatchingRemote(block: () -> T): Result<T> = runCatching(block)
 }

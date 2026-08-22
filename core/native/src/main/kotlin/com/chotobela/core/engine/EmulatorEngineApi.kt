@@ -18,6 +18,18 @@ interface EmulatorEngineApi : Closeable {
     /** Loads a ROM and prepares the core. Must be called before [start]. */
     fun load(romPath: String): Boolean
 
+    /** One-time host initialization (saves dir). Safe to call repeatedly. */
+    fun initHost(savesDir: String): Boolean = false
+
+    // --- Audio transport (AAudio lives natively) ---
+    /** Starts the low-latency output stream. Returns actual sample rate or -1. */
+    fun startAudioTransport(): Int = -1
+
+    fun stopAudioTransport() {}
+
+    /** Master volume 0..1 */
+    fun setMasterVolume(volume: Float) {}
+
     /** Releases all core resources. */
     override fun close()
 
