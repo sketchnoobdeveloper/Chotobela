@@ -78,8 +78,8 @@ fun SettingsScreen(
                     ?.let(viewModel::setPerformanceMode)
             }
         )
-        SwitchRow("Integer scaling", graphics.integerScaling, viewModel::toggleIntegerScaling)
-        SwitchRow("VSync", graphics.vsync, viewModel::toggleVSync)
+        SwitchRow("Integer scaling", graphics.integerScaling) { viewModel.toggleIntegerScaling() }
+        SwitchRow("VSync", graphics.vsync) { viewModel.toggleVSync() }
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
             Text("Frame skip", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.weight(1f))
@@ -91,7 +91,7 @@ fun SettingsScreen(
         }
 
         SectionTitle("Audio")
-        SwitchRow("Sound enabled", audio.enabled, viewModel::toggleAudio)
+        SwitchRow("Sound enabled", audio.enabled) { viewModel.toggleAudio() }
         Column(Modifier.padding(horizontal = 16.dp)) {
             Text("Volume: ${(audio.volume * 100).toInt()}%")
             Slider(
