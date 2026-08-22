@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -15,9 +17,12 @@ android {
 
         // Supabase credentials are injected from local.properties (never committed).
         // When absent the app runs in DEMO MODE with a seeded local catalog.
-        val localProps = rootProject.file("local.properties")
-            .takeIf { it.exists() }
-            ?.let { java.util.Properties().apply { it.inputStream.use { s -> load(s) } } }
+        val localProps = Properties().apply {
+            rootProject.file("local.properties")
+                .takeIf { it.exists() }
+                ?.inputStream()
+                ?.use { stream -> load(stream) }
+        }
 
         buildConfigField(
             "String",

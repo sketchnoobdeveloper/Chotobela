@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-
-enum class LibrarySection(val label: String) {
+import javax.inject.Injectenum class LibrarySection(val label: String) {
     MY_GAMES("My Games"),
     RECENT("Recently Played"),
     FAVORITES("Favorites")
@@ -36,7 +34,8 @@ data class LibraryUiState(
 
 @HiltViewModel
 class LibraryViewModel @Inject constructor(
-    private val libraryDao: LibraryDao
+    private val libraryDao: LibraryDao,
+    private val romImporter: RomImporter
 ) : ViewModel() {
 
     private val section = MutableStateFlow(LibrarySection.MY_GAMES)
@@ -75,6 +74,22 @@ class LibraryViewModel @Inject constructor(
 
     private val _actions = MutableStateFlow<LibraryAction?>(null)
     val actions: StateFlow<LibraryAction?> = _actions.asStateFlow()
+
+    private val _importMessage = MutableStateFlow<String?>(null)
+    val importMessage: StateFlow<String?> = _importMessage.asStateFlow()
+
+    fun importRom(uri: android.net.Uri) {
+        viewModelScope.launch {
+            when (val result = romImporter.import(uri)) {
+                is com.chotobela.feature.library.ImportResult.Success ->
+                    _importMessage.value = "Imported \"${result.gameTitle}\""
+                is com.chotobela.feature.library.ImportResult.Rejected ->
+                    _importMessage.value = result.reason
+            }
+        }
+    }
+
+    fun consumeImportMessage() { _importMessage.value = null }
 
     fun setSection(value: LibrarySection) { section.value = value }
     fun setQuery(value: String) { query.value = value }

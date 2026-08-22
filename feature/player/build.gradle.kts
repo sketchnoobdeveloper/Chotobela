@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":core:emulator"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
     implementation(libs.lifecycle.runtime.compose)
