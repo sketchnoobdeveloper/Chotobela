@@ -1,4 +1,4 @@
-package com.chotobela.core.native
+package com.chotobela.core.engine
 
 /** Identifies which emulator core runs a given game. */
 enum class CoreId(val id: String, val displayName: String) {

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.chotobela.core.native"
+    namespace = "com.chotobela.core.engine"
     compileSdk = 35
 
     defaultConfig {

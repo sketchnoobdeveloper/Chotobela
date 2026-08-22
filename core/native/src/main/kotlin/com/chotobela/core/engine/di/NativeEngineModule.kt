@@ -1,8 +1,8 @@
-package com.chotobela.core.native.di
+package com.chotobela.core.engine.di
 
-import com.chotobela.core.native.EmulatorEngineApi
-import com.chotobela.core.native.EngineLoop
-import com.chotobela.core.native.JniEmulatorEngine
+import com.chotobela.core.engine.EmulatorEngineApi
+import com.chotobela.core.engine.EngineLoop
+import com.chotobela.core.engine.JniEmulatorEngine
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

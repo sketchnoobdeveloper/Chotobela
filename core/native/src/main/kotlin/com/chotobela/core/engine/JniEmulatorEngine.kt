@@ -1,4 +1,4 @@
-package com.chotobela.core.native
+package com.chotobela.core.engine
 
 import com.chotobela.engine.NativeEngine
 import java.nio.ByteBuffer

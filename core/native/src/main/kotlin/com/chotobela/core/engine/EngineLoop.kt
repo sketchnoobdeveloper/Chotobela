@@ -1,4 +1,4 @@
-package com.chotobela.core.native
+package com.chotobela.core.engine
 
 import kotlinx.coroutines.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicBoolean

@@ -2,7 +2,7 @@ package com.chotobela.engine
 
 /**
  * Low-level JNI bindings to libchotobela_engine.so.
- * Prefer [com.chotobela.core.native.EmulatorEngineApi] for application use.
+ * Prefer [com.chotobela.core.engine.EmulatorEngineApi] for application use.
  */
 object NativeEngine {
 

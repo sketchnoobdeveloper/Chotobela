@@ -8,8 +8,8 @@ import com.chotobela.core.database.dao.SaveStateDao
 import com.chotobela.core.database.entity.SaveStateEntity
 import com.chotobela.core.datastore.AudioSettings
 import com.chotobela.core.datastore.SettingsRepository
-import com.chotobela.core.native.EmulatorEngineApi
-import com.chotobela.core.native.EngineLoop
+import com.chotobela.core.engine.EmulatorEngineApi
+import com.chotobela.core.engine.EngineLoop
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -59,7 +59,7 @@ class EmulatorSession @Inject constructor(
     /** Prepares native host once per process; safe to call repeatedly. */
     fun ensureHostReady(): Boolean {
         val dir = File(context.filesDir, MAX_SAVES_DIR).apply { mkdirs() }
-        return (engine as? com.chotobela.core.native.JniEmulatorEngine)?.init(dir.absolutePath) ?: true
+        return (engine as? com.chotobela.core.engine.JniEmulatorEngine)?.init(dir.absolutePath) ?: true
     }
 
     suspend fun load(gameId: String, romPath: String): Boolean {
@@ -144,7 +144,7 @@ class EmulatorSession @Inject constructor(
 
     fun loadFromSlot(slot: Int): Boolean = engine.loadStateFrom(slot)
 
-    suspend fun slotInfos(): List<com.chotobela.core.native.SaveSlotInfo> =
+    suspend fun slotInfos(): List<com.chotobela.core.engine.SaveSlotInfo> =
         (0 until SLOT_COUNT).map { engine.slotInfo(it) }
 
     private fun slotFilePath(slot: Int): String =
@@ -194,7 +194,7 @@ class EmulatorSession @Inject constructor(
 
     fun applyAudioNow(audio: AudioSettings) {
         if (audio.enabled) {
-            (engine as? com.chotobela.core.native.JniEmulatorEngine)?.let { jni ->
+            (engine as? com.chotobela.core.engine.JniEmulatorEngine)?.let { jni ->
                 com.chotobela.engine.NativeEngine.ensureLoaded()
                 jniTargetSampleRate(audio)
                 NativeBridge.setVolume(if (audio.volume > 0f) audio.volume else 1.0f)
