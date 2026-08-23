@@ -81,6 +81,6 @@ object DemoCatalog {
     }
 
     enum class Core(val id: String) {
-        MAME("mame"), FBNEO("fbneo"), CHIP8("chip8")
+        MAME("mame"), FBNEO("fbneo"), CHIP8("chip8"), SI8080("si8080")
     }
 }

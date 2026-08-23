@@ -40,7 +40,7 @@ class RomImporter @Inject constructor(
         val platformInfo = when (ext) {
             "ch8", "chip8" -> Triple("CHIP-8", "chip8", "roms/chip8")
             else -> return@withContext ImportResult.Rejected(
-                "Unsupported format .$ext — CHIP-8 (.ch8) supported at launch"
+                "Unsupported format .$ext — CHIP-8 (.ch8) and Arcade 8080 (.bin/.rom) supported"
             )
         }
 

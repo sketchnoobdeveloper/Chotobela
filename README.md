@@ -11,7 +11,8 @@ clean architecture.
 - **Kotlin 2.0 / Jetpack Compose / Material 3** (dynamic color, dark & light)
 - **Clean Architecture, MVVM, multi-module** (16 Gradle modules)
 - **Hilt** DI · **Coroutines/Flow** · **Room** · **DataStore**
-- **Android NDK / C17 native engine** (`libchotobela_engine.so`)
+- **Android NDK / C17 native engine** (`libchotobela_engine.so`) with swappable cores:
+  CHIP-8 and an original 8080 arcade core (verified via `tools/si8080`)
 - **Supabase** backend (auth/catalog/storage) — runs in **DEMO MODE** until credentials are configured
 
 ## Module map
@@ -30,7 +31,8 @@ feature/
   home/ library/ store/ player/ profile/ settings/ download/
 native-engine/          C sources -> libchotobela_engine.so
   engine-host/          Core ABI registry, ROM I/O, save states
-  cores/chip8/          Original CHIP-8 interpreter (reference core)
+  cores/chip8/          Original CHIP-8 interpreter
+  cores/si8080/         Original Intel 8080 CPU + classic arcade board shell
   renderer/ audio/ input/   Platform backend hooks (GLES3/AAudio)
 ```
 

@@ -48,10 +48,14 @@ NOT build all of MAME (hours of CI + giant binary). Instead:
 ## Steps
 
 - [x] Vendor unmodified sources (tag mame0289)
-- [ ] Minimal OSD skeleton compiling against NDK (C++17, exceptions off)
+- [x] **Interim arcade core shipped**: original clean-room Intel 8080
+      interpreter + classic fixed-shooter board shell (`cores/si8080`),
+      verified by native test suite (`tools/si8080/`) — plays user-supplied
+      board images (.bin/.rom) exactly like MAME4droid's no-ROMs-shipped model
+- [ ] Minimal MAME OSD skeleton compiling against NDK (C++17, exceptions off)
 - [ ] cb_core_api adapter registering as `"mame"`
 - [ ] One driver running at full speed on arm64
-- [ ] ROM hash/database plumbing for store catalog entries
+- [ ] ROM zip extraction + hash plumbing for store catalog entries
 
 ## License note
 

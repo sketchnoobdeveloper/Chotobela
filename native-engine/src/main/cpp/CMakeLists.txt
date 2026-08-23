@@ -8,6 +8,8 @@ add_library(chotobela_engine SHARED
         jni/chotobela_jni.c
         engine-host/engine_host.c
         cores/chip8/chip8.c
+        cores/si8080/i8080.c
+        cores/si8080/si_arcade.c
         renderer/renderer_backend.c
         audio/audio_backend.c
         input/input_state.c

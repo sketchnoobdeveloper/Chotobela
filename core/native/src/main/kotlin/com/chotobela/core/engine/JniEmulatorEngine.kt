@@ -41,7 +41,8 @@ class JniEmulatorEngine @Inject constructor() : EmulatorEngineApi {
         if (!initialized) return false
         val id = when (romPath.substringAfterLast('.').lowercase()) {
             "ch8", "chip8" -> CoreId.CHIP8.id
-            else -> CoreId.CHIP8.id // future: sniff by extension/header per platform table
+            "bin", "rom", "si", "inv" -> CoreId.SI8080.id
+            else -> CoreId.CHIP8.id
         }
         coreId = CoreId.fromId(id)
         romLoaded = NativeEngine.nativeLoadRom(coreId.id, romPath)

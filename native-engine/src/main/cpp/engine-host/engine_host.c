@@ -9,6 +9,7 @@
  * Cores self-register via constructor-priority registration in their TU.
  * We use explicit registration calls here to keep linking simple and static. */
 extern const cb_core_api cb_core_chip8;
+extern const cb_core_api cb_core_si8080;
 
 static const cb_core_api *g_registry[CB_MAX_CORES];
 static int g_registry_count = 0;
@@ -16,6 +17,7 @@ static int g_registry_count = 0;
 static void register_all(void) {
     if (g_registry_count > 0) return;
     g_registry[g_registry_count++] = &cb_core_chip8;
+    g_registry[g_registry_count++] = &cb_core_si8080;
 }
 
 const cb_core_api *cb_find_core(const char *id) {

@@ -3,6 +3,7 @@ package com.chotobela.core.engine
 /** Identifies which emulator core runs a given game. */
 enum class CoreId(val id: String, val displayName: String) {
     CHIP8("chip8", "CHIP-8"),
+    SI8080("si8080", "Arcade 8080"),
     MAME("mame", "MAME"),
     FBNEO("fbneo", "FinalBurn Neo");
 
