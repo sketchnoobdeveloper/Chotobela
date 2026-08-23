@@ -81,6 +81,7 @@ LOCAL_C_INCLUDES := \
     $(MROOT)/src/osd/myosd \
     $(MROOT)/src/frontend/mame \
     $(MROOT)/src/frontend/mame/ui \
+    $(MROOT)/src/emu/layout \
     $(MROOT)/3rdparty/lua/src \
     $(MROOT)/3rdparty/expat/lib \
     $(MROOT)/3rdparty/zlib \
