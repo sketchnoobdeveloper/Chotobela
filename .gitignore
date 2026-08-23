@@ -15,3 +15,6 @@
 # Vendored MAME source tree (see third_party/VENDORED_MAME.md)
 third_party/mame/*
 !third_party/mame/README.md
+
+# reference clones (real forks live under /emulator)
+third_party/mame4droid/
