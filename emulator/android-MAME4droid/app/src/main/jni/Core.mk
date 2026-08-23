@@ -68,6 +68,7 @@ FILE_LIST += $(foreach d,$(DRIVER_DIRS),$(call walk-cpp,$(d)))
 FILE_LIST += $(foreach d,$(EXT_DIRS),$(call walk-cpp,$(d)) $(call walk-c,$(d)))
 
 FILE_LIST := $(filter-out $(MROOT)/src/emu/drivers/%,$(FILE_LIST))
+FILE_LIST := $(filter-out $(MROOT)/src/lib/netlist/examples/%,$(FILE_LIST))
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 # ---- includes ----
