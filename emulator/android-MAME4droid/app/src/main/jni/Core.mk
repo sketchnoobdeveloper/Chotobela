@@ -112,6 +112,9 @@ LOCAL_CPPFLAGS += \
     -fno-strict-aliasing \
     -Wno-everything \
     -DNDEBUG \
+    -DCRLF=2 \
+    -DSDLMAME_UNIX=1 \
+    -DSDLMAME_LINUX=1 \
     -DUSE_QTDEBUG=0 \
     -DNO_DEBUG_BUILTIN \
     -DMAME_DEBUG=0 \
