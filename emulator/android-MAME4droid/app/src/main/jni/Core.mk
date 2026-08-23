@@ -85,7 +85,7 @@ LOCAL_C_INCLUDES := \
 
 # ---- flags ----
 LOCAL_CPPFLAGS += \
-    -std=c++17 \
+    -std=c++20 \
     -fexceptions \
     -frtti \
     -O1 \
