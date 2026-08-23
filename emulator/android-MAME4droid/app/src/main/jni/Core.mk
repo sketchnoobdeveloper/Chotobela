@@ -96,6 +96,7 @@ LOCAL_C_INCLUDES := \
     $(MROOT)/3rdparty/zstd/lib \
     $(MROOT)/3rdparty/glm \
     $(MROOT)/3rdparty/compat \
+    $(MROOT)/3rdparty/asio/include \
     $(MROOT)/bgfx/include \
     $(LOCAL_PATH)
 
@@ -115,6 +116,8 @@ LOCAL_CPPFLAGS += \
     -DUSE_OPENGL=0 \
     -DUSE_SDL_SOUND=0 \
     -DLUA_COMPAT_APIINTCASTS \
+    -DASIO_STANDALONE \
+    -DASIO_SEPARATE_COMPILATION=0 \
     -DZLIB_COMPAT
 
 LOCAL_CFLAGS += -O1 -Wno-everything -DNDEBUG
