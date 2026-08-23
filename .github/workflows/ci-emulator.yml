@@ -43,6 +43,18 @@ jobs:
           rsync -a emulator/src-overlay/ emulator/merged-src/
           echo "MAME_SRC_ROOT=$GITHUB_WORKSPACE/emulator/merged-src" >> $GITHUB_ENV
 
+      - name: Generate MAME font/layout headers
+        run: |
+          pip install pillow -q || true
+          M=emulator/merged-src; B=$M/scripts/build
+          mkdir -p $M/src/emu/ui $M/src/emu/layout
+          python3 $B/file2str.py $M/scripts/font/NotoSans-Bold.bdc $M/src/emu/uismall.fh font_uismall uint8_t
+          python3 $B/png2bdc.py $M/src/frontend/mame/ui/uicmd14.png /tmp/cmd.bdc
+          python3 $B/file2str.py /tmp/cmd.bdc $M/src/emu/ui/uicmd14.fh font_uicmd14 uint8_t
+          for L in noscreens monitors dualhovu dualhsxs dualhuov triphsxs quadhsxs; do
+            python3 $B/complay.py $M/src/emu/layout/$L.lay $M/src/emu/layout/$L.lh $L
+          done
+
       - name: Build debug APK (full MAME core)
         working-directory: emulator/android-MAME4droid
         env:
