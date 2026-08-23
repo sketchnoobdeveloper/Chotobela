@@ -24,12 +24,24 @@ android {
         versionName '1.38.3'
 
         ndk {
-            moduleName = "mame4droid-jni"
             //noinspection ChromeOsAbiSupport
             abiFilters   "arm64-v8a"
 			//ndkPath "C:\\Android\\android-ndk-r27c"
 			ndkVersion = "28.2.13676358"
         }
+    }
+
+    // x86_64 hosts (CI): full ndk-build of the shim.
+    // ARM64 hosts: Google ships no aarch64 NDK toolchain binaries, so we use a
+    // prebuilt shim compiled natively (see docs note in emulator/README).
+    if (!System.getProperty('os.arch').startsWith('aarch')) {
+        externalNativeBuild {
+            ndkBuild {
+                path file('src/main/jni/Android.mk')
+            }
+        }
+    } else {
+        sourceSets.main.jniLibs.srcDirs += 'src/main/arm64jni'
     }
 
 	base {
@@ -73,12 +85,6 @@ android {
 			jniDebuggable true
 			//renderscriptDebuggable true
 		}
-    }
-
-    externalNativeBuild {
-        ndkBuild {
-            path file('src/main/jni/Android.mk')
-        }
     }
 
     namespace = 'com.seleuco.mame4droid'

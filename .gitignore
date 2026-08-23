@@ -18,3 +18,10 @@ third_party/mame/*
 
 # reference clones (real forks live under /emulator)
 third_party/mame4droid/
+src/main/arm64jni/
+
+# emulator local-build artifacts
+emulator/android-MAME4droid/build/
+emulator/android-MAME4droid/app/build/
+emulator/android-MAME4droid/local.properties
+emulator/android-MAME4droid/app/src/main/arm64jni/
