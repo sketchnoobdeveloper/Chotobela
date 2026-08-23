@@ -13,7 +13,7 @@ jobs:
   build:
     name: Build arcade shell APK
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 300
 
     steps:
       - name: Checkout
@@ -35,8 +35,18 @@ jobs:
             "ndk;28.2.13676358" "cmake;3.22.1" "platforms;android-36" "platform-tools" \
             > /dev/null
 
-      - name: Build debug APK
+      - name: Merge upstream MAME sources with overlay
+        run: |
+          mkdir -p /tmp/up && curl -sfL             https://codeload.github.com/mamedev/mame/tar.gz/refs/tags/mame0289             | tar -xz --strip-components=1 -C /tmp/up
+          mkdir -p emulator/merged-src
+          rsync -a /tmp/up/ emulator/merged-src/
+          rsync -a emulator/src-overlay/ emulator/merged-src/
+          echo "MAME_SRC_ROOT=$GITHUB_WORKSPACE/emulator/merged-src" >> $GITHUB_ENV
+
+      - name: Build debug APK (full MAME core)
         working-directory: emulator/android-MAME4droid
+        env:
+          MAME_SRC_ROOT: ${{ env.MAME_SRC_ROOT }}
         run: ./gradlew :app:assembleDebug --stacktrace
 
       - name: Upload APK artifact

@@ -36,3 +36,8 @@ LOCAL_LDFLAGS += "-Wl,-z,max-page-size=16384" #para Android NDK r26 and lowe y s
 
 include $(BUILD_SHARED_LIBRARY)
 
+
+# ---- Chotobela Arcade: full MAME core (when merged tree is provided) ----
+ifneq ($(strip $(MAME_SRC_ROOT)),)
+include $(LOCAL_PATH)/Core.mk
+endif
