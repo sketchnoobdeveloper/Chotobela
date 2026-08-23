@@ -46,14 +46,22 @@ DRIVER_DIRS := \
     $(MROOT)/src/mame
 
 EXT_DIRS := \
-    $(MROOT)/ext/lua \
-    $(MROOT)/ext/expat/lib \
-    $(MROOT)/ext/zlib \
-    $(MROOT)/ext/utf8proc \
-    $(MROOT)/ext/libflac \
-    $(MROOT)/ext/libjpeg \
-    $(MROOT)/ext/rapidjson/include \
-    $(MROOT)/ext/sol2
+    $(MROOT)/3rdparty/lua/src \
+    $(MROOT)/3rdparty/expat/lib \
+    $(MROOT)/3rdparty/zlib \
+    $(MROOT)/3rdparty/utf8proc \
+    $(MROOT)/3rdparty/flac/src/libFLAC \
+    $(MROOT)/3rdparty/flac/src/share/utf8 \
+    $(MROOT)/3rdparty/libjpeg \
+    $(MROOT)/3rdparty/pugixml/src \
+    $(MROOT)/3rdparty/sqlite3 \
+    $(MROOT)/3rdparty/softfloat3/source \
+    $(MROOT)/3rdparty/ymfm/src \
+    $(MROOT)/3rdparty/asmjit/src/asmjit \
+    $(MROOT)/3rdparty/zstd/lib/common \
+    $(MROOT)/3rdparty/zstd/lib/compress \
+    $(MROOT)/3rdparty/zstd/lib/decompress \
+    $(MROOT)/3rdparty/aes256cbc
 
 FILE_LIST := $(foreach d,$(CORE_DIRS),$(call walk-cpp,$(d)))
 FILE_LIST += $(foreach d,$(DRIVER_DIRS),$(call walk-cpp,$(d)))
@@ -73,14 +81,22 @@ LOCAL_C_INCLUDES := \
     $(MROOT)/src/osd/myosd \
     $(MROOT)/src/frontend/mame \
     $(MROOT)/src/frontend/mame/ui \
-    $(MROOT)/ext/lua \
-    $(MROOT)/ext/expat/lib \
-    $(MROOT)/ext/zlib \
-    $(MROOT)/ext/utf8proc \
-    $(MROOT)/ext/libflac/include \
-    $(MROOT)/ext/rapidjson/include \
-    $(MROOT)/ext/sol2/include \
-    $(MROOT)/ext/bgfx/include \
+    $(MROOT)/3rdparty/lua/src \
+    $(MROOT)/3rdparty/expat/lib \
+    $(MROOT)/3rdparty/zlib \
+    $(MROOT)/3rdparty/utf8proc \
+    $(MROOT)/3rdparty/flac/include \
+    $(MROOT)/3rdparty/libjpeg \
+    $(MROOT)/3rdparty/pugixml/src \
+    $(MROOT)/3rdparty/rapidjson/include \
+    $(MROOT)/3rdparty/sol2/include \
+    $(MROOT)/3rdparty/softfloat3/source/include \
+    $(MROOT)/3rdparty/ymfm/src \
+    $(MROOT)/3rdparty/asmjit/src \
+    $(MROOT)/3rdparty/zstd/lib \
+    $(MROOT)/3rdparty/glm \
+    $(MROOT)/3rdparty/compat \
+    $(MROOT)/bgfx/include \
     $(LOCAL_PATH)
 
 # ---- flags ----
