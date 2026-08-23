@@ -97,6 +97,8 @@ LOCAL_C_INCLUDES := \
     $(MROOT)/3rdparty/glm \
     $(MROOT)/3rdparty/compat \
     $(MROOT)/3rdparty/asio/include \
+    $(MROOT)/3rdparty/nanosvg/src \
+    $(MROOT)/3rdparty/nanosvgrast/src \
     $(MROOT)/bgfx/include \
     $(LOCAL_PATH)
 
