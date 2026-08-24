@@ -54,6 +54,7 @@ jobs:
           for L in noscreens monitors dualhovu dualhsxs dualhuov triphsxs quadhsxs; do
             python3 $B/complay.py $M/src/emu/layout/$L.lay $M/src/emu/layout/$L.lh $L
           done
+          python3 tools/gen_has_formats.py $M/src/lib/formats/all.cpp $M/src/lib/formats/has_formats.h
 
       - name: Build debug APK (full MAME core)
         working-directory: emulator/android-MAME4droid
